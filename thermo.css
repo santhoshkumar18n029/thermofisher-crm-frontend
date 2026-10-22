@@ -1,0 +1,115 @@
+.login-container {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+     background: linear-gradient(to top, #e7131600, #ff8688);
+    /* background: linear-gradient(to right, #e7131600, #e71316); */
+    
+        
+    
+
+     background-image:
+        linear-gradient(
+            rgba(0, 0, 0, 0.25),
+            rgba(0, 0, 0, 0.25)
+        ),
+        url("image/login-bg.jpg");
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; 
+    background-blend-mode: darken;
+}
+
+
+/* ================= LOGIN BOX ================= */
+
+.login-box {
+    width: 350px;
+    padding: 1.75rem;
+
+    justify-content: center;
+    align-items: center;
+
+    background:  #e8e8e8 ;
+    /* background:  #746f6f15  rgba(255, 255, 255, 0.15); */
+
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+
+    /* box-shadow: 0 0 30px rgba(247, 3, 3, 0.3); */
+
+    /* backdrop-filter: blur(10px); */
+}
+
+
+/* ================= TITLE ================= */
+
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 25px;
+
+    color: #e71316;
+}
+
+
+/* ================= INPUTS ================= */
+
+.login-box input {
+    display: block;
+
+    width: 100%;
+    padding: 12px;
+
+    margin-bottom: 15px;
+
+    box-sizing: border-box;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+
+    background: rgba(255, 255, 255, 0.9);
+
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.login-box input:hover {
+    border-color: #c2b6b6;
+}
+
+.login-box input:focus {
+    outline: none;
+
+    border-color: #ffffff;
+
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+
+/* ================= LOGIN BUTTON ================= */
+
+.login-box button {
+    width: 100%;
+    padding: 12px;
+
+    border: none;
+    border-radius: 15px;
+
+    background-color: #e71316;
+    color: white;
+
+    font-size: 16px;
+
+    cursor: pointer;
+
+    transition: background-color 0.3s ease,
+                transform 0.2s ease;
+}
+
+.login-box button:hover {
+    background-color: #ff0004;
+    transform: translateY(-1px);
+}

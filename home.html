@@ -1,0 +1,149 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thermofisher CRM</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+
+
+<body>
+
+   
+      <!-- Header -->
+
+    <header class="header">
+
+        <div class="logo"></div>
+
+        <div class="user-name">Welcome, <strong id="loggedInUser">User</strong></div>
+
+        <!-- <div class="user-name">Welcome, <strong>Admin</strong></div> -->
+
+        
+
+        <!-- <flex class="headerbutton">
+
+   <button id="sidebarToggle" class="sidebar-toggle-btn" aria-label="Toggle Sidebar"></button>&#9776;
+
+
+            </flex> -->
+    </header>
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- Order Search Section -->
+
+
+        <div id="loadingState" class="loading-state">
+    <div class="loading-spinner"></div>
+
+   
+    <p>Searching orders...</p>
+</div>
+
+ <!-- Search message -->
+    <div id="searchMessage" class="search-message"></div>
+
+
+    <div id="multipleResults" class="multiple-results"></div>
+
+
+         <h2>Order Search</h2>
+        <section class="crm-section">
+           
+            <form class="crm-form grid-layout" id="orderSearchForm">
+                <div class="form-row">
+                    <label for="order-num">Order Number</label>
+
+                    <input type="text"
+       id="order-num"
+       name="orderNumber"
+       placeholder="e.g. ORD-10023">
+
+
+
+                    
+                </div>
+
+                <div class="form-row">
+                    <label for="po-num">PO Number</label>
+                    <input type="text" id="po-num" name="poNumber" placeholder="e.g. PO-88341">
+                </div>
+
+                <div class="form-row">
+                    <label for="inv-num">Invoice Number</label>
+                    <input type="text" id="inv-num" name="invoiceNumber" placeholder="e.g. INV-5542">
+                </div>
+
+                <div class="form-row">
+                    <label for="quote-num">Quote Number</label>
+                    <input type="text" id="quote-num" name="quoteNumber" placeholder="e.g. QT-9901">
+                </div>
+
+                <div class="form-row">
+                    <label for="acc-num-search">Account Number</label>
+                    <input type="text" id="acc-num-search" name="accountNumber" placeholder="e.g. ACC-1249">
+                </div>
+
+                <div class="form-row">
+                    <label for="state">State</label>
+                    <input type="text" id="state" name="state" placeholder="e.g. CA, NY, TX">
+                </div>
+
+                <div class="form-actions full-width">
+                    <button type="submit" class="btn btn-primary">Search Orders</button>
+                    <button type="reset" class="btn btn-secondary">Clear</button>
+                </div>
+            </form>
+        </section>
+<!-- 
+        Create Quote Section
+          <h2>Create Quote</h2>
+        <section class="crm-section">
+           
+            <form class="crm-form grid-layout">
+                <div class="form-row">
+                    <label for="quote-acc-num">Account Number</label>
+                    <input type="text" id="quote-acc-num" name="accountNumber" required>
+                </div>
+
+                <div class="form-row">
+                    <label for="quote-acc-name">Account Name</label>
+                    <input type="text" id="quote-acc-name" name="accountName" required>
+                </div>
+
+                <div class="form-row full-width">
+                    <label for="quote-address">Address</label>
+                    <input type="text" id="quote-address" name="address">
+                </div> 
+ 
+                <div class="form-actions full-width">
+                    <button type="submit" class="btn btn-primary">Find  Account</button>
+                </div>
+            </form>
+        </section> -->
+
+    </main>
+
+
+
+
+    
+
+    <!-- Footer -->
+    <footer class="footer">
+        <nav class="footer-links">
+            <a href="#">Site Map</a>
+            
+        </nav>
+        <p class="copyright">&copy; Thermofisher Scientific. All rights reserved.</p>
+    </footer>
+    
+
+    <script src="home.js"></script>
+</body>
+</html>

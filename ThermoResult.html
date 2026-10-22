@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Management System</title>
+  <link rel="stylesheet" href="ThermoResult.css">
+   
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-icon">
+         <img src="image/icon-top.png" alt="Logo">
+        <i data-lucide="layers" style="display: none;"></i>
+      </div>
+      <div class="brand-text">
+         
+        <h1>Order Management System</h1>
+      </div>
+    </div>
+    
+    <div class="header-controls">
+      <div class="search-select-wrapper">
+        <i data-lucide="search" class="search-icon"></i>
+        <select id="orderSelector" class="header-select">
+          <option value="ORD-84920"></option>
+          <option value="ORD-84921"></option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout Matching Structure -->
+  <main class="page-container">
+
+    <!-- 1. Top Order Banner Card -->
+    <section class="banner-card">
+      <div class="banner-left">
+        <div class="title-with-pill">
+          <h2 class="order-title">Order: <span id="displayOrderNumber"></span></h2>
+          <span class="pill-badge pill-green" id="orderStatusPill"></span>
+        </div>
+        <p class="order-subtitle">Customer: <strong id="headerCustomerName">   </strong> | Record verified through Central ERP</p>
+      </div>
+      <div class="banner-actions">
+        <button class="btn btn-outline" id="editModeBtn">
+          <i data-lucide="pen-line"></i>
+          <span>Edit Mode</span>
+        </button>
+        <button class="btn btn-outline" id="copyAllBtn">
+          <i data-lucide="copy"></i>
+          <span>Copy All</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. Row 1: Primary Order Details & Order Status Box -->
+    <div class="grid-2-col">
+
+      <!-- Primary Order Details -->
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <div class="panel-icon"><i data-lucide="file-text"></i></div>
+            <h3>Primary Order Details</h3>
+          </div>
+          <span class="badge-subtle">Read Only</span>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-field">
+            <label>ACCOUNT NUMBER</label>
+            <div class="input-display-box">
+              <span class="value-text" id="accNumber"></span>
+              <button class="copy-field-btn"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>PO NUMBER</label>
+            <div class="input-display-box">
+              <span class="value-text" id="poNumber"></span>
+              <button class="copy-field-btn"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>INVOICE NUMBER</label>
+            <div class="input-display-box">
+              <span class="value-text" id="invoiceNumber"></span>
+              <button class="copy-field-btn"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>QUOTE NUMBER</label>
+            <div class="input-display-box">
+              <span class="value-text" id="quoteNumber"></span>
+              <button class="copy-field-btn"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>CUSTOMER NAME</label>
+            <div class="input-display-box">
+              <span class="value-text" id="custName"> </span>
+              <button class="copy-field-btn"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>STATE</label>
+            <div class="input-display-box">
+              <span class="value-text" id="orderState"> </span>
+              <button class="copy-field-btn"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Order Status Box -->
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <div class="panel-icon status-icon"><i data-lucide="activity"></i></div>
+            <h3>Order Status Box</h3>
+          </div>
+          <span class="pill-badge pill-green" id="boxStatusBadge"></span>
+        </div>
+
+        <div class="stack-fields">
+          <div class="form-field">
+            <label>ORDER STATUS</label>
+            <div class="input-display-box">
+              <span class="value-text bold-text" id="statusVal"></span>
+              <button class="copy-field-btn"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>ORDER AMOUNT</label>
+            <div class="input-display-box">
+              <span class="value-text bold-text"><span class="currency-symbol">$</span> <span id="orderAmountVal"></span></span>
+              <button class="copy-field-btn"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>ORDER DATE</label>
+            <div class="input-display-box">
+              <span class="value-text" id="orderDateVal"></span>
+              <button class="copy-field-btn"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>CREATED AT</label>
+            <div class="input-display-box">
+              <span class="value-text font-mono" id="createdAtVal"></span>
+              <button class="copy-field-btn"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label>UPDATED AT</label>
+            <div class="input-display-box">
+              <span class="value-text font-mono" id="updatedAtVal"></span>
+              <button class="copy-field-btn"><i data-lucide="copy"></i></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- 3. Row 2: Product Information (Full Width Table) -->
+    <section class="panel panel-mt">
+      <div class="panel-header">
+        <div class="panel-title-group">
+          <div class="panel-icon"><i data-lucide="package"></i></div>
+          <div>
+            <h3>Product Information</h3>
+            <p class="panel-desc">Repeatable product rows with multiple products per order.</p>
+          </div>
+        </div>
+        <span class="badge-subtle" id="itemsCountBadge"></span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Product Name</th>
+              <th>SKU</th>
+              <th>Quantity</th>
+              <th>Unit</th>
+              <th>Unit Price</th>
+              <th>Discount</th>
+              <th class="text-right">Line Total</th>
+            </tr>
+          </thead>
+          <tbody id="productTableBody">
+            <!-- Dynamic items rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. Row 3: Ship To & Bill To Addresses -->
+    <div class="grid-2-col panel-mt">
+
+      <!-- Ship To Address -->
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <div class="panel-icon"><i data-lucide="truck"></i></div>
+            <h3>Ship To Address</h3>
+          </div>
+          <button class="copy-section-btn" id="copyShipBtn" title="Copy full address"><i data-lucide="copy"></i></button>
+        </div>
+
+        <div class="address-card" id="shipAddressBlock">
+          <div class="address-name" id="shipRecipient"> </div>
+          <div class="address-line" id="shipLine1">  </div>
+          <div class="address-line" id="shipLine2"> </div>
+          <div class="address-line">
+            <span id="shipCity"></span> <span id="shipState"></span> <span id="shipZip"></span>
+          </div>
+          <div class="address-country" id="shipCountry"> </div>
+        </div>
+      </section>
+
+      <!-- Bill To Address -->
+      <section class="panel">
+        <div class="panel-header">
+          <div class="panel-title-group">
+            <div class="panel-icon"><i data-lucide="credit-card"></i></div>
+            <h3>Bill To Address</h3>
+          </div>
+          <button class="copy-section-btn" id="copyBillBtn" title="Copy full address"><i data-lucide="copy"></i></button>
+        </div>
+
+        <div class="address-card" id="billAddressBlock">
+          <div class="address-name" id="billRecipient"></div>
+          <div class="address-line" id="billLine1"></div>
+          <div class="address-line" id="billLine2"></div>
+          <div class="address-line">
+            <span id="billCity"></span> <span id="billState"></span> <span id="billZip"></span>
+          </div>
+          <div class="address-country" id="billCountry"> </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- 5. Row 4: Order Price Summary (Full Width Breakdown) -->
+    <section class="panel panel-mt">
+      <div class="panel-header">
+        <div class="panel-title-group">
+          <div class="panel-icon"><i data-lucide="calculator"></i></div>
+          <h3>Order Price Summary</h3>
+        </div>
+      </div>
+
+      <div class="price-summary-grid">
+        <div class="price-summary-item">
+          <span class="price-label">Subtotal</span>
+          <span class="price-value" id="summarySubtotal"></span>
+        </div>
+        <div class="price-summary-item">
+          <span class="price-label">Discount</span>
+          <span class="price-value text-discount" id="summaryDiscount"></span>
+        </div>
+        <div class="price-summary-item">
+          <span class="price-label">Shipping Charges</span>
+          <span class="price-value" id="summaryShipping"></span>
+        </div>
+        <div class="price-summary-item">
+          <span class="price-label">Tax Amount</span>
+          <span class="price-value" id="summaryTax"></span>
+        </div>
+        <div class="price-summary-item grand-total-item">
+          <span class="price-label">Grand Total</span>
+          <span class="price-value" id="summaryGrandTotal"></span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <div id="toast" class="toast">Copied to clipboard!</div>
+
+  <script src="ThermoResult.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>
