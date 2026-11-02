@@ -16,6 +16,22 @@ body {
 
 
 
+/* .order-suggestions {
+    display: none;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.order-suggestions .order-result-card {
+    cursor: pointer;
+}
+
+.order-suggestions .order-result-card:hover {
+    background-color: #f4f6fa;
+} */
+
+
+
 
 /* Header */
 .header {
@@ -28,17 +44,7 @@ body {
     align-items: left;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-/* .headerbutton{
 
-    
-    color: #ffffff;
-    display: flex;
-    margin-left: auto;
-    justify-content: left;
-    align-items: left;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0)
-    
-} */
 
 .header .logo {
     font-size: 1.25rem;
@@ -130,6 +136,8 @@ body {
         transform: rotate(360deg);
     }
 }
+
+   /* Multiple Order Results  */
 
 .multiple-results {
     display: none;

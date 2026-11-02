@@ -104,7 +104,7 @@ body {
 
     appearance: none;
     background-color: #ffffff;
-    border: 1px solid var(--border-color)#e2e8f0;
+    border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
     padding: 3px 96px 9px 36px;
     font-size: 0.85rem;
@@ -552,4 +552,230 @@ body {
   .price-summary-grid {
     grid-template-columns: 1fr;
   }
+
+  
+.field-edit-input {
+    width: 100%;
+    min-width: 0;
+    padding: 8px;
+    border: 1px solid #e71316;
+    border-radius: 5px;
+    outline: none;
+    font-size: 14px;
+}
+
+.field-save-btn,
+.field-cancel-btn {
+    padding: 6px 10px;
+    margin-left: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.field-save-btn {
+    background: #e71316;
+    color: white;
+}
+
+.field-cancel-btn {
+    background: #e5e7eb;
+    color: #333;
+}
+
+
+/* =====================================
+   PRODUCT INFORMATION - UI POLISH
+===================================== */
+
+/* Product action buttons */
+.product-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.product-actions .btn {
+    min-height: 36px;
+    font-size: 0.82rem;
+}
+
+#addProductBtn {
+    background: var(--primary-red);
+    color: #fff;
+    border-color: var(--primary-red);
+}
+
+#addProductBtn:hover {
+    background: var(--primary-red-hover);
+    border-color: var(--primary-red-hover);
+}
+
+#editProductsBtn {
+    color: var(--text-main);
+}
+
+#editProductsBtn:hover {
+    border-color: var(--primary-red);
+    color: var(--primary-red);
+}
+
+/* Product table */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+}
+
+.data-table {
+    min-width: 950px;
+}
+
+.data-table th {
+    white-space: nowrap;
+    padding: 13px 14px;
+    background: #f8fafc;
+}
+
+.data-table td {
+    padding: 14px;
+    vertical-align: middle;
+}
+
+.data-table tbody tr {
+    transition: background-color 0.15s ease;
+}
+
+.data-table tbody tr:hover {
+    background: #fffafa;
+}
+
+/* SKU */
+.sku-tag {
+    color: #475569;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Remove button */
+#productTableBody button {
+    border: 1px solid #fecaca;
+    background: #fff1f2;
+    color: #dc2626;
+    border-radius: 6px;
+    padding: 6px 11px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+}
+
+#productTableBody button:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+    color: #fff;
+}
+
+#productTableBody button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Product editing inputs */
+#productTableBody input {
+    width: 95px;
+    min-width: 65px;
+    padding: 7px 9px;
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--text-main);
+    background: #fff;
+    outline: none;
+}
+
+#productTableBody input:focus,
+#newProductSelect:focus,
+#newProductQuantity:focus {
+    border-color: var(--primary-red);
+    box-shadow: 0 0 0 3px rgba(231, 19, 22, 0.08);
+}
+
+/* Add Product controls */
+#newProductSelect,
+#newProductQuantity {
+    min-height: 40px;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 7px;
+    background: #fff;
+    color: var(--text-main);
+    font-size: 0.85rem;
+    outline: none;
+}
+
+#newProductSelect {
+    min-width: 220px;
+}
+
+#newProductQuantity {
+    width: 100px;
+}
+
+/* Add / Cancel buttons */
+#confirmAddProductBtn {
+    background: var(--primary-red);
+    color: #fff;
+    border: 1px solid var(--primary-red);
+}
+
+#confirmAddProductBtn:hover {
+    background: var(--primary-red-hover);
+}
+
+#cancelAddProductBtn {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid var(--border-color);
+}
+
+#cancelAddProductBtn:hover {
+    background: #e2e8f0;
+}
+
+/* Disabled button state */
+.btn:disabled,
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* Responsive product section */
+@media (max-width: 640px) {
+    .product-actions {
+        justify-content: flex-start;
+        width: 100%;
+    }
+
+    .product-actions .btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    #newProductSelect {
+        min-width: 100%;
+        width: 100%;
+    }
+
+    #newProductQuantity {
+        width: 100%;
+    }
+}
+
+
 }

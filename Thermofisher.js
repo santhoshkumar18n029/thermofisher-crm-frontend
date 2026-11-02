@@ -2,8 +2,8 @@
 // Served as a plain <script src="script.js"> (no type="module"), so no import/export here.
 
 
-const BASE_URL = "https://thermofisher-crm-backend.onrender.com";
-// const BASE_URL = "http://localhost:8080";
+// const BASE_URL = "https://thermofisher-crm-backend.onrender.com";
+const BASE_URL = "http://localhost:8080";
 
 
 document.addEventListener("DOMContentLoaded", () => {

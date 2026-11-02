@@ -1,0 +1,666 @@
+dummy code for crm
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Result Details</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Smooth transitions for editable mode */
+        .editable-field:not([readonly]) {
+            background-color: #ffffff;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen font-sans antialiased flex flex-col">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-200 font-bold text-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-semibold text-slate-900 leading-tight">Order Management System</h1>
+                    <p class="text-xs text-slate-500">Enterprise Logistics & Billing Center</p>
+                </div>
+            </div>
+
+            <!-- Quick Demo Order Switcher & Search -->
+            <div class="flex items-center space-x-3">
+                <div class="relative hidden sm:block w-64">
+                    <label for="orderSelector" class="sr-only">Select Demo Order</label>
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <select id="orderSelector" class="w-full pl-9 pr-8 py-1.5 text-sm bg-slate-100 border border-slate-300 rounded-lg focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 cursor-pointer font-medium">
+                        <option value="ORD-84920">ORD-84920 (Delivered)</option>
+                        <option value="ORD-71934">ORD-71934 (In Transit)</option>
+                        <option value="ORD-55021">ORD-55021 (Processing)</option>
+                        <option value="ORD-33109">ORD-33109 (Pending Review)</option>
+                    </select>
+                </div>
+
+                <button id="btnRefresh" title="Reset/Reload Data" class="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors border border-slate-200">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-6">
+
+        <!-- Page Header & Action Bar -->
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="space-y-1">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full">Query Result</span>
+                    <span id="headerBadgeStatus" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                        Active Order
+                    </span>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+                    Order Lookup Result: <span id="displayOrderTitle" class="text-indigo-600">ORD-84920</span>
+                </h2>
+                <p class="text-sm text-slate-500">Record verified through Central ERP & Warehouse database.</p>
+            </div>
+
+            <!-- Toolbar buttons -->
+            <div class="flex flex-wrap items-center gap-2">
+                <!-- Toggle Read-Only / Edit -->
+                <button id="btnToggleEdit" class="inline-flex items-center px-3.5 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors border border-slate-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <svg id="editIcon" class="w-4 h-4 mr-1.5 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                    </svg>
+                    <span id="btnEditLabel">Edit Mode</span>
+                </button>
+
+                <!-- Copy All Details -->
+                <button id="btnCopyAll" class="inline-flex items-center px-3.5 py-2 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 rounded-lg transition-colors border border-slate-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <svg class="w-4 h-4 mr-1.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                    Copy All
+                </button>
+
+                <!-- Print / Export -->
+                <button id="btnPrint" class="inline-flex items-center px-3.5 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                    </svg>
+                    Print Summary
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+            <!-- Primary Order Details Container (Left 2 Columns) -->
+            <section class="lg:col-span-2 bg-white rounded-xl border border-slate-200 shadow-sm p-6 space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="p-2 bg-indigo-50 text-indigo-600 rounded-lg">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-slate-900">Primary Order Details</h3>
+                            <p class="text-xs text-slate-500">Identification, invoice reference, and customer profile</p>
+                        </div>
+                    </div>
+                    <span id="modeBadge" class="text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-slate-600">
+                        Read Only
+                    </span>
+                </div>
+
+                <!-- Form Fields Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+                    <!-- 1. Account Number -->
+                    <div class="space-y-1.5">
+                        <label for="account_number" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                            Account Number
+                        </label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <input type="text" id="account_number" name="account_number" readonly
+                                class="editable-field w-full pl-3 pr-9 py-2.5 text-sm font-medium rounded-lg border border-slate-200 bg-slate-50 text-slate-800 transition focus:outline-none"
+                                value="ACC-9982410">
+                            <button type="button" onclick="copyField('account_number')" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-indigo-600 transition-colors" title="Copy Account Number">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 2. Order Number -->
+                    <div class="space-y-1.5">
+                        <label for="order_number" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                            Order Number
+                        </label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <input type="text" id="order_number" name="order_number" readonly
+                                class="editable-field w-full pl-3 pr-9 py-2.5 text-sm font-bold rounded-lg border border-slate-200 bg-slate-50 text-indigo-700 transition focus:outline-none"
+                                value="ORD-84920">
+                            <button type="button" onclick="copyField('order_number')" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-indigo-600 transition-colors" title="Copy Order Number">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3. PO Number -->
+                    <div class="space-y-1.5">
+                        <label for="po_number" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                            PO Number
+                        </label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <input type="text" id="po_number" name="po_number" readonly
+                                class="editable-field w-full pl-3 pr-9 py-2.5 text-sm font-medium rounded-lg border border-slate-200 bg-slate-50 text-slate-800 transition focus:outline-none"
+                                value="PO-2026-8841">
+                            <button type="button" onclick="copyField('po_number')" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-indigo-600 transition-colors" title="Copy PO Number">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4. Customer Name -->
+                    <div class="space-y-1.5">
+                        <label for="customer_name" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                            Customer Name
+                        </label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <input type="text" id="customer_name" name="customer_name" readonly
+                                class="editable-field w-full pl-3 pr-9 py-2.5 text-sm font-medium rounded-lg border border-slate-200 bg-slate-50 text-slate-800 transition focus:outline-none"
+                                value="Apex Global Logistics Inc.">
+                            <button type="button" onclick="copyField('customer_name')" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-indigo-600 transition-colors" title="Copy Customer Name">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 5. Invoice Number -->
+                    <div class="space-y-1.5">
+                        <label for="invoice_number" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                            Invoice Number
+                        </label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <input type="text" id="invoice_number" name="invoice_number" readonly
+                                class="editable-field w-full pl-3 pr-9 py-2.5 text-sm font-medium rounded-lg border border-slate-200 bg-slate-50 text-slate-800 transition focus:outline-none"
+                                value="INV-99201">
+                            <button type="button" onclick="copyField('invoice_number')" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-indigo-600 transition-colors" title="Copy Invoice Number">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 6. Quote Number -->
+                    <div class="space-y-1.5">
+                        <label for="quote_number" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                            Quote Number
+                        </label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <input type="text" id="quote_number" name="quote_number" readonly
+                                class="editable-field w-full pl-3 pr-9 py-2.5 text-sm font-medium rounded-lg border border-slate-200 bg-slate-50 text-slate-800 transition focus:outline-none"
+                                value="QT-774092">
+                            <button type="button" onclick="copyField('quote_number')" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-indigo-600 transition-colors" title="Copy Quote Number">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 7. State / Region -->
+                    <div class="space-y-1.5 sm:col-span-2">
+                        <label for="state" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                            State / Territory
+                        </label>
+                        <div class="relative rounded-lg shadow-sm">
+                            <input type="text" id="state" name="state" readonly
+                                class="editable-field w-full pl-3 pr-9 py-2.5 text-sm font-medium rounded-lg border border-slate-200 bg-slate-50 text-slate-800 transition focus:outline-none"
+                                value="California (CA)">
+                            <button type="button" onclick="copyField('state')" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-indigo-600 transition-colors" title="Copy State">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Footer tip -->
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                    <span>* Click the copy icon beside any field to paste directly.</span>
+                    <span class="inline-flex items-center gap-1 text-emerald-600 font-medium">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Synced with CRM
+                    </span>
+                </div>
+            </section>
+
+            <!-- Order Status Dedicated Box (Right 1 Column) -->
+            <section class="lg:col-span-1 bg-white rounded-xl border-2 border-indigo-100 shadow-md p-6 flex flex-col justify-between relative overflow-hidden">
+                <!-- Background Accent Glow -->
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-indigo-50 rounded-full blur-2xl pointer-events-none"></div>
+
+                <div class="space-y-6 relative z-10">
+                    <!-- Status Box Title -->
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <div class="p-1.5 bg-indigo-600 text-white rounded-md shadow-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-bold text-slate-900 tracking-tight">Order Status Box</h3>
+                        </div>
+                        <span class="text-[10px] uppercase font-bold tracking-widest text-indigo-500 bg-indigo-50 px-2 py-0.5 rounded">Live Status</span>
+                    </div>
+
+                    <!-- 1. Order Status text box & dynamic pill -->
+                    <div class="space-y-1.5">
+                        <div class="flex items-center justify-between">
+                            <label for="order_status" class="text-xs font-semibold uppercase tracking-wider text-slate-600">
+                                Order Status
+                            </label>
+                            <!-- Dynamic colored badge preview -->
+                            <span id="statusIndicatorBadge" class="text-xs px-2.5 py-0.5 rounded-full font-semibold bg-emerald-100 text-emerald-800">
+                                Completed
+                            </span>
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="order_status" name="order_status" readonly
+                                class="editable-field w-full pl-3 pr-9 py-2.5 text-sm font-semibold rounded-lg border border-slate-200 bg-slate-50 text-slate-800 transition focus:outline-none"
+                                value="Completed">
+                            <button type="button" onclick="copyField('order_status')" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-indigo-600" title="Copy Status">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 2. Order Amount text box -->
+                    <div class="space-y-1.5">
+                        <label for="order_amount" class="text-xs font-semibold uppercase tracking-wider text-slate-600">
+                            Order Amount
+                        </label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 font-semibold">$</span>
+                            <input type="text" id="order_amount" name="order_amount" readonly
+                                class="editable-field w-full pl-8 pr-9 py-2.5 text-base font-bold text-slate-900 rounded-lg border border-slate-200 bg-slate-50 transition focus:outline-none"
+                                value="14,850.00">
+                            <button type="button" onclick="copyField('order_amount')" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-indigo-600" title="Copy Amount">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 3. Order Date text box -->
+                    <div class="space-y-1.5">
+                        <label for="order_date" class="text-xs font-semibold uppercase tracking-wider text-slate-600">
+                            Order Date
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="order_date" name="order_date" readonly
+                                class="editable-field w-full pl-3 pr-9 py-2.5 text-sm rounded-lg border border-slate-200 bg-slate-50 text-slate-800 transition focus:outline-none"
+                                value="2026-09-15">
+                            <button type="button" onclick="copyField('order_date')" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-indigo-600" title="Copy Order Date">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 4. Created At text box -->
+                    <div class="space-y-1.5">
+                        <label for="created_at" class="text-xs font-semibold uppercase tracking-wider text-slate-600">
+                            Created At
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="created_at" name="created_at" readonly
+                                class="editable-field w-full pl-3 pr-9 py-2.5 text-xs text-slate-700 font-mono rounded-lg border border-slate-200 bg-slate-50 transition focus:outline-none"
+                                value="2026-09-15 08:34:12 UTC">
+                            <button type="button" onclick="copyField('created_at')" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-indigo-600" title="Copy Created At">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 5. Updated At text box -->
+                    <div class="space-y-1.5">
+                        <label for="updated_at" class="text-xs font-semibold uppercase tracking-wider text-slate-600">
+                            Updated At
+                        </label>
+                        <div class="relative">
+                            <input type="text" id="updated_at" name="updated_at" readonly
+                                class="editable-field w-full pl-3 pr-9 py-2.5 text-xs text-slate-700 font-mono rounded-lg border border-slate-200 bg-slate-50 transition focus:outline-none"
+                                value="2026-09-22 14:12:45 UTC">
+                            <button type="button" onclick="copyField('updated_at')" class="absolute inset-y-0 right-0 pr-2.5 flex items-center text-slate-400 hover:text-indigo-600" title="Copy Updated At">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Box Footer Action -->
+                <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                    <span class="flex items-center gap-1.5">
+                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Last audited by system
+                    </span>
+                    <button id="btnQuickStatusUpdate" class="text-indigo-600 hover:text-indigo-800 font-medium hover:underline text-xs">
+                        Cycle State
+                    </button>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <div id="toastNotification" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none z-50 flex items-center bg-slate-900 text-white text-sm px-4 py-3 rounded-lg shadow-xl space-x-3">
+        <svg id="toastIcon" class="w-5 h-5 text-emerald-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+        <span id="toastMessage">Text copied to clipboard</span>
+    </div>
+
+    <script>
+        // Sample order datasets
+        const sampleOrders = {
+            "ORD-84920": {
+                account_number: "ACC-9982410",
+                order_number: "ORD-84920",
+                po_number: "PO-2026-8841",
+                customer_name: "Apex Global Logistics Inc.",
+                invoice_number: "INV-99201",
+                quote_number: "QT-774092",
+                state: "California (CA)",
+                order_status: "Completed",
+                order_amount: "14,850.00",
+                order_date: "2026-09-15",
+                created_at: "2026-09-15 08:34:12 UTC",
+                updated_at: "2026-09-22 14:12:45 UTC"
+            },
+            "ORD-71934": {
+                account_number: "ACC-4102941",
+                order_number: "ORD-71934",
+                po_number: "PO-2026-5120",
+                customer_name: "Quantum Cloud Technologies",
+                invoice_number: "INV-87114",
+                quote_number: "QT-661204",
+                state: "Texas (TX)",
+                order_status: "In Transit",
+                order_amount: "32,400.50",
+                order_date: "2026-09-19",
+                created_at: "2026-09-19 11:20:01 UTC",
+                updated_at: "2026-09-23 09:45:10 UTC"
+            },
+            "ORD-55021": {
+                account_number: "ACC-1092833",
+                order_number: "ORD-55021",
+                po_number: "PO-2026-1193",
+                customer_name: "Horizon Retail Partners",
+                invoice_number: "INV-49210",
+                quote_number: "QT-339211",
+                state: "New York (NY)",
+                order_status: "Processing",
+                order_amount: "4,620.00",
+                order_date: "2026-09-21",
+                created_at: "2026-09-21 14:55:00 UTC",
+                updated_at: "2026-09-23 04:10:19 UTC"
+            },
+            "ORD-33109": {
+                account_number: "ACC-6619022",
+                order_number: "ORD-33109",
+                po_number: "PO-2026-9043",
+                customer_name: "Beacon Health Innovations",
+                invoice_number: "INV-33019",
+                quote_number: "QT-192840",
+                state: "Illinois (IL)",
+                order_status: "Pending Review",
+                order_amount: "9,880.75",
+                order_date: "2026-09-22",
+                created_at: "2026-09-22 16:18:22 UTC",
+                updated_at: "2026-09-22 17:00:04 UTC"
+            }
+        };
+
+        let isEditable = false;
+
+        // Populate fields with order data
+        function loadOrder(orderKey) {
+            const data = sampleOrders[orderKey] || sampleOrders["ORD-84920"];
+
+            // Fields in primary section
+            document.getElementById('account_number').value = data.account_number;
+            document.getElementById('order_number').value = data.order_number;
+            document.getElementById('po_number').value = data.po_number;
+            document.getElementById('customer_name').value = data.customer_name;
+            document.getElementById('invoice_number').value = data.invoice_number;
+            document.getElementById('quote_number').value = data.quote_number;
+            document.getElementById('state').value = data.state;
+
+            // Fields in separate Order Status box
+            document.getElementById('order_status').value = data.order_status;
+            document.getElementById('order_amount').value = data.order_amount;
+            document.getElementById('order_date').value = data.order_date;
+            document.getElementById('created_at').value = data.created_at;
+            document.getElementById('updated_at').value = data.updated_at;
+
+            // Header labels & badge
+            document.getElementById('displayOrderTitle').textContent = data.order_number;
+            updateStatusBadge(data.order_status);
+        }
+
+        function updateStatusBadge(status) {
+            const pill = document.getElementById('statusIndicatorBadge');
+            const headerBadge = document.getElementById('headerBadgeStatus');
+            
+            // Normalize badge styling
+            pill.className = "text-xs px-2.5 py-0.5 rounded-full font-semibold ";
+            headerBadge.className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold ";
+
+            switch(status.toLowerCase()) {
+                case 'completed':
+                case 'delivered':
+                    pill.className += "bg-emerald-100 text-emerald-800";
+                    headerBadge.className += "bg-emerald-100 text-emerald-800";
+                    headerBadge.textContent = "Completed";
+                    break;
+                case 'in transit':
+                    pill.className += "bg-blue-100 text-blue-800";
+                    headerBadge.className += "bg-blue-100 text-blue-800";
+                    headerBadge.textContent = "In Transit";
+                    break;
+                case 'processing':
+                    pill.className += "bg-amber-100 text-amber-800";
+                    headerBadge.className += "bg-amber-100 text-amber-800";
+                    headerBadge.textContent = "Processing";
+                    break;
+                default:
+                    pill.className += "bg-purple-100 text-purple-800";
+                    headerBadge.className += "bg-purple-100 text-purple-800";
+                    headerBadge.textContent = status;
+            }
+            pill.textContent = status;
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            const toastMsg = document.getElementById('toastMessage');
+            toastMsg.textContent = message;
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2500);
+        }
+
+        function copyField(fieldId) {
+            const input = document.getElementById(fieldId);
+            if (!input) return;
+
+            // Safe iframe copy method using document.execCommand('copy')
+            const tempInput = document.createElement('input');
+            tempInput.value = input.value;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast(`Copied ${fieldId.replace('_', ' ')}: "${input.value}"`);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const orderSelector = document.getElementById('orderSelector');
+            const btnRefresh = document.getElementById('btnRefresh');
+            const btnToggleEdit = document.getElementById('btnToggleEdit');
+            const btnEditLabel = document.getElementById('btnEditLabel');
+            const modeBadge = document.getElementById('modeBadge');
+            const btnCopyAll = document.getElementById('btnCopyAll');
+            const btnPrint = document.getElementById('btnPrint');
+            const btnQuickStatusUpdate = document.getElementById('btnQuickStatusUpdate');
+
+            // Initial load
+            loadOrder(orderSelector.value);
+
+            // Change order dropdown listener
+            orderSelector.addEventListener('change', (e) => {
+                loadOrder(e.target.value);
+                showToast(`Loaded details for ${e.target.value}`);
+            });
+
+            // Reload current order
+            btnRefresh.addEventListener('click', () => {
+                loadOrder(orderSelector.value);
+                showToast("Order details refreshed");
+            });
+
+            // Toggle Edit / Read-Only Mode
+            btnToggleEdit.addEventListener('click', () => {
+                isEditable = !isEditable;
+                const fields = document.querySelectorAll('.editable-field');
+                
+                fields.forEach(field => {
+                    field.readOnly = !isEditable;
+                });
+
+                if (isEditable) {
+                    btnEditLabel.textContent = "Save Changes";
+                    btnToggleEdit.classList.add('bg-indigo-50', 'text-indigo-700', 'border-indigo-300');
+                    modeBadge.textContent = "Editing Mode";
+                    modeBadge.className = "text-xs font-semibold px-2.5 py-1 rounded bg-amber-100 text-amber-800";
+                    showToast("Editing mode enabled. You can edit input fields.");
+                } else {
+                    btnEditLabel.textContent = "Edit Mode";
+                    btnToggleEdit.classList.remove('bg-indigo-50', 'text-indigo-700', 'border-indigo-300');
+                    modeBadge.textContent = "Read Only";
+                    modeBadge.className = "text-xs font-semibold px-2.5 py-1 rounded bg-slate-100 text-slate-600";
+                    
+                    // Update the status pill in case user edited status manually
+                    const currentStatusVal = document.getElementById('order_status').value;
+                    updateStatusBadge(currentStatusVal);
+                    showToast("Changes saved successfully");
+                }
+            });
+
+            // Copy all fields as formatted JSON/Text
+            btnCopyAll.addEventListener('click', () => {
+                const summary = {
+                    account_number: document.getElementById('account_number').value,
+                    order_number: document.getElementById('order_number').value,
+                    po_number: document.getElementById('po_number').value,
+                    customer_name: document.getElementById('customer_name').value,
+                    invoice_number: document.getElementById('invoice_number').value,
+                    quote_number: document.getElementById('quote_number').value,
+                    state: document.getElementById('state').value,
+                    order_status: document.getElementById('order_status').value,
+                    order_amount: document.getElementById('order_amount').value,
+                    order_date: document.getElementById('order_date').value,
+                    created_at: document.getElementById('created_at').value,
+                    updated_at: document.getElementById('updated_at').value
+                };
+
+                const formattedText = Object.entries(summary)
+                    .map(([k, v]) => `${k.replace('_', ' ').toUpperCase()}: ${v}`)
+                    .join('\n');
+
+                const tempArea = document.createElement('textarea');
+                tempArea.value = formattedText;
+                document.body.appendChild(tempArea);
+                tempArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempArea);
+
+                showToast("All order details copied to clipboard!");
+            });
+
+            // Quick print simulation
+            btnPrint.addEventListener('click', () => {
+                window.print();
+            });
+
+            // Quick status cycle demo button
+            const statusCycle = ["Completed", "In Transit", "Processing", "Pending Review"];
+            btnQuickStatusUpdate.addEventListener('click', () => {
+                const statusInput = document.getElementById('order_status');
+                const currentIndex = statusCycle.indexOf(statusInput.value);
+                const nextIndex = (currentIndex + 1) % statusCycle.length;
+                const nextStatus = statusCycle[nextIndex];
+                
+                statusInput.value = nextStatus;
+                updateStatusBadge(nextStatus);
+                document.getElementById('updated_at').value = new Date().toISOString().replace('T', ' ').substring(0, 19) + ' UTC';
+                showToast(`Order status cycled to: ${nextStatus}`);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -56,17 +56,21 @@
         <section class="crm-section">
            
             <form class="crm-form grid-layout" id="orderSearchForm">
-                <div class="form-row">
-                    <label for="order-num">Order Number</label>
+                
+                
+                
+               <div class="form-row">
+    <label for="order-num">Order Number</label>
 
-                    <input type="text"
-       id="order-num"
-       name="orderNumber"
-       placeholder="e.g. ORD-10023">
+    <input type="text"
+           id="order-num"
+           name="orderNumber"
+           placeholder="e.g. ORD-10023"
+           autocomplete="off">
 
-
-
-                    
+    <div id="orderSuggestions" class="order-suggestions"></div>
+</div>
+               
                 </div>
 
                 <div class="form-row">

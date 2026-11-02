@@ -188,10 +188,62 @@
             <p class="panel-desc">Repeatable product rows with multiple products per order.</p>
           </div>
         </div>
-        <span class="badge-subtle" id="itemsCountBadge"></span>
+        
+       
+    
+       <div class="product-actions">
+
+      <span class="badge-subtle" id="itemsCountBadge"></span>
+
+    <button class="btn btn-outline" id="addProductBtn" type="button">
+        <i data-lucide="plus"></i>
+        <span>Add Product</span>
+    </button>
+
+    <button class="btn btn-outline" id="editProductsBtn" type="button">
+        <i data-lucide="pencil"></i>
+      <span>Edit Products</span>
+    </button>
+</div>
+
+</div>
       </div>
 
       <div class="table-responsive">
+
+        
+<!-- Add Product Form -->
+<div id="addProductForm" class="add-product-form" style="display: none;">
+
+    <div class="form-field">
+        <label for="newProductSelect">SELECT PRODUCT</label>
+        <select id="newProductSelect">
+            <option value="">Loading products...</option>
+        </select>
+    </div>
+
+    <div class="form-field">
+        <label for="newProductQuantity">QUANTITY</label>
+        <input
+            type="number"
+            id="newProductQuantity"
+            min="1"
+            value="1"
+            placeholder="Enter quantity">
+    </div>
+
+    <button class="btn btn-primary" id="confirmAddProductBtn" type="button">
+        <i data-lucide="plus"></i>
+        Add Product
+    </button>
+
+    <button class="btn btn-outline" id="cancelAddProductBtn" type="button">
+        Cancel
+    </button>
+
+</div>
+
+
         <table class="data-table">
           <thead>
             <tr>
@@ -202,6 +254,7 @@
               <th>Unit Price</th>
               <th>Discount</th>
               <th class="text-right">Line Total</th>
+<th>Actions</th>
             </tr>
           </thead>
           <tbody id="productTableBody">
@@ -211,52 +264,193 @@
       </div>
     </section>
 
-    <!-- 4. Row 3: Ship To & Bill To Addresses -->
-    <div class="grid-2-col panel-mt">
+    
 
-      <!-- Ship To Address -->
-      <section class="panel">
+
+
+    
+<!-- 4. Row 3: Ship To & Bill To Addresses -->
+<div class="grid-2-col panel-mt">
+
+    <!-- Ship To Address -->
+    <section class="panel">
         <div class="panel-header">
-          <div class="panel-title-group">
-            <div class="panel-icon"><i data-lucide="truck"></i></div>
-            <h3>Ship To Address</h3>
-          </div>
-          <button class="copy-section-btn" id="copyShipBtn" title="Copy full address"><i data-lucide="copy"></i></button>
+            <div class="panel-title-group">
+                <div class="panel-icon">
+                    <i data-lucide="truck"></i>
+                </div>
+                <h3>Ship To Address</h3>
+            </div>
+
+            <div class="address-actions">
+                <button class="btn btn-outline" id="editShipBtn" type="button">
+                    <i data-lucide="pencil"></i>
+                    Edit
+                </button>
+
+                <button class="copy-section-btn" id="copyShipBtn"
+                        type="button" title="Copy full address">
+                    <i data-lucide="copy"></i>
+                </button>
+            </div>
         </div>
 
+        <!-- Display Address -->
         <div class="address-card" id="shipAddressBlock">
-          <div class="address-name" id="shipRecipient"> </div>
-          <div class="address-line" id="shipLine1">  </div>
-          <div class="address-line" id="shipLine2"> </div>
-          <div class="address-line">
-            <span id="shipCity"></span> <span id="shipState"></span> <span id="shipZip"></span>
-          </div>
-          <div class="address-country" id="shipCountry"> </div>
+            <div class="address-name" id="shipRecipient"></div>
+            <div class="address-line" id="shipLine1"></div>
+            <div class="address-line" id="shipLine2"></div>
+            <div class="address-line">
+                <span id="shipCity"></span>
+                <span id="shipState"></span>
+                <span id="shipZip"></span>
+            </div>
+            <div class="address-country" id="shipCountry"></div>
         </div>
-      </section>
 
-      <!-- Bill To Address -->
-      <section class="panel">
+        <!-- Edit Address Form -->
+        <div id="shipAddressForm" class="address-edit-form" style="display:none;">
+
+            <div class="form-field">
+                <label for="shipRecipientInput">RECIPIENT NAME</label>
+                <input id="shipRecipientInput" type="text">
+            </div>
+
+            <div class="form-field">
+                <label for="shipLine1Input">ADDRESS LINE 1</label>
+                <input id="shipLine1Input" type="text">
+            </div>
+
+            <div class="form-field">
+                <label for="shipLine2Input">ADDRESS LINE 2</label>
+                <input id="shipLine2Input" type="text">
+            </div>
+
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="shipCityInput">CITY</label>
+                    <input id="shipCityInput" type="text">
+                </div>
+
+                <div class="form-field">
+                    <label for="shipStateInput">STATE</label>
+                    <input id="shipStateInput" type="text">
+                </div>
+
+                <div class="form-field">
+                    <label for="shipZipInput">POSTAL CODE</label>
+                    <input id="shipZipInput" type="text">
+                </div>
+
+                <div class="form-field">
+                    <label for="shipCountryInput">COUNTRY</label>
+                    <input id="shipCountryInput" type="text">
+                </div>
+            </div>
+
+            <div class="address-form-actions">
+                <button class="btn btn-primary" id="saveShipBtn" type="button">
+                    Save Changes
+                </button>
+
+                <button class="btn btn-outline" id="cancelShipBtn" type="button">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Bill To Address -->
+    <section class="panel">
         <div class="panel-header">
-          <div class="panel-title-group">
-            <div class="panel-icon"><i data-lucide="credit-card"></i></div>
-            <h3>Bill To Address</h3>
-          </div>
-          <button class="copy-section-btn" id="copyBillBtn" title="Copy full address"><i data-lucide="copy"></i></button>
+            <div class="panel-title-group">
+                <div class="panel-icon">
+                    <i data-lucide="credit-card"></i>
+                </div>
+                <h3>Bill To Address</h3>
+            </div>
+
+            <div class="address-actions">
+                <button class="btn btn-outline" id="editBillBtn" type="button">
+                    <i data-lucide="pencil"></i>
+                    Edit
+                </button>
+
+                <button class="copy-section-btn" id="copyBillBtn"
+                        type="button" title="Copy full address">
+                    <i data-lucide="copy"></i>
+                </button>
+            </div>
         </div>
 
+        <!-- Display Address -->
         <div class="address-card" id="billAddressBlock">
-          <div class="address-name" id="billRecipient"></div>
-          <div class="address-line" id="billLine1"></div>
-          <div class="address-line" id="billLine2"></div>
-          <div class="address-line">
-            <span id="billCity"></span> <span id="billState"></span> <span id="billZip"></span>
-          </div>
-          <div class="address-country" id="billCountry"> </div>
+            <div class="address-name" id="billRecipient"></div>
+            <div class="address-line" id="billLine1"></div>
+            <div class="address-line" id="billLine2"></div>
+            <div class="address-line">
+                <span id="billCity"></span>
+                <span id="billState"></span>
+                <span id="billZip"></span>
+            </div>
+            <div class="address-country" id="billCountry"></div>
         </div>
-      </section>
 
-    </div>
+        <!-- Edit Address Form -->
+        <div id="billAddressForm" class="address-edit-form" style="display:none;">
+
+            <div class="form-field">
+                <label for="billRecipientInput">RECIPIENT NAME</label>
+                <input id="billRecipientInput" type="text">
+            </div>
+
+            <div class="form-field">
+                <label for="billLine1Input">ADDRESS LINE 1</label>
+                <input id="billLine1Input" type="text">
+            </div>
+
+            <div class="form-field">
+                <label for="billLine2Input">ADDRESS LINE 2</label>
+                <input id="billLine2Input" type="text">
+            </div>
+
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="billCityInput">CITY</label>
+                    <input id="billCityInput" type="text">
+                </div>
+
+                <div class="form-field">
+                    <label for="billStateInput">STATE</label>
+                    <input id="billStateInput" type="text">
+                </div>
+
+                <div class="form-field">
+                    <label for="billZipInput">POSTAL CODE</label>
+                    <input id="billZipInput" type="text">
+                </div>
+
+                <div class="form-field">
+                    <label for="billCountryInput">COUNTRY</label>
+                    <input id="billCountryInput" type="text">
+                </div>
+            </div>
+
+            <div class="address-form-actions">
+                <button class="btn btn-primary" id="saveBillBtn" type="button">
+                    Save Changes
+                </button>
+
+                <button class="btn btn-outline" id="cancelBillBtn" type="button">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </section>
+
+</div>
+
 
     <!-- 5. Row 4: Order Price Summary (Full Width Breakdown) -->
     <section class="panel panel-mt">
