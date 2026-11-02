@@ -3,10 +3,10 @@
 // ======================================
 
 // Local backend
-const BASE_URL = "http://localhost:8080";
+// const BASE_URL = "http://localhost:8080";
 
 // Deployed backend (uncomment after frontend deployment)
-// const BASE_URL = "https://thermofisher-crm-backend.onrender.com";
+const BASE_URL = "https://thermofisher-crm-backend.onrender.com";
 
 
 // ======================================
